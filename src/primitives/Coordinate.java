@@ -27,4 +27,18 @@ public class Coordinate {
     public void set_coordinate(double _coordinate) {
         this._coordinate = _coordinate;
     }
+
+
+
+   public int compareTo (Coordinate c){
+        if (_coordinate == c._coordinate)
+            return 1;
+        return -1;
+   }
+public void add (Coordinate c){
+        _coordinate += c._coordinate;
+}
+public void subtract (Coordinate c){
+    _coordinate -= c._coordinate;
+}
 }

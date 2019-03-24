@@ -39,4 +39,11 @@ public class Point2D {
     public void set_y(Coordinate _y) {
         this._y = _y;
     }
+
+
+    public int compareTo (Point2D p){
+      if(  _x.compareTo(p.get_x()) == 1 &&  _y.compareTo(p.get_y())==1)
+          return 1;
+      return 0;
+    }
 }

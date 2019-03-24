@@ -3,7 +3,7 @@ package geometries;
 import primitives.Point3D;
 import primitives.Vector;
 //represents a cylinder in space
-public class Cylinder extends RadialGeometry{
+public class Cylinder extends RadialGeometry implements Geometry{
     private Point3D _axisPoint;
     private Vector _axisDirection;
 
@@ -46,5 +46,10 @@ public class Cylinder extends RadialGeometry{
 
     public void set_axisDirection(Vector _axisDirection) {
         this._axisDirection = _axisDirection;
+    }
+
+    @Override
+    public Vector getNormal(Point3D p) {
+        return null;
     }
 }
