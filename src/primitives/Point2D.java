@@ -12,8 +12,7 @@ public class Point2D {
 
     //copy constructor
     public Point2D(Point2D p) {
-        _x = p._x;
-        _y = p._y;
+        this(new Coordinate(p.get_x()),new Coordinate(p.get_y()));
     }
 
     //empty constructor
