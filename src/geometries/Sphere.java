@@ -28,8 +28,7 @@ public class Sphere extends RadialGeometry implements Geometry {
 
     //copy constructor
     public Sphere(Sphere s) {
-        this._center = s._center;
-        set_radius(s.get_radius());
+       this(s.get_radius(),new Point3D(s.get_center()));
     }
 
     //empty constructor
@@ -52,8 +51,7 @@ public class Sphere extends RadialGeometry implements Geometry {
 
 
         Vector cheatV = new Vector(_center);
-        p.subtract(cheatV);
-        Vector myVector = new Vector(p);
+        Vector myVector=new Vector(p.subtract(cheatV));
         myVector.normalize();
         return myVector;
     }
@@ -61,24 +59,30 @@ public class Sphere extends RadialGeometry implements Geometry {
     @Override
     public List<Point3D> findIntersections(Ray r) {
         List l = new ArrayList();
-        double th = 0;
-        double t1 = 0;
-        double t2 = 0;
+        double th,tm,t1,t2,d;
+        //copy points so the originals don't get changed
         Point3D cpyPoint1 = new Point3D(r.get_p00());
         Point3D cpyPoint2 = new Point3D(r.get_p00());
-        Vector L = new Vector(_center.pointSubtract(r.get_p00()));
-        double tm = L.dotProduct(r.get_direction());
-        double d = sqrt((L.length() * L.length()) - (tm * tm));
+        Point3D cpyCenter=new Point3D(get_center());
+        
+        //create vector of ray to center
+        Vector L = new Vector(cpyCenter.subtract(r.get_p00()));
+        tm = L.dotProduct(r.get_direction());
+        d = sqrt((L.length() * L.length()) - (tm * tm));
+       //if no intersections
         if (d > get_radius())
             return l;
         else {
+            //Calculate the intersection points
             th = sqrt(get_radius() * get_radius() - (d * d));
             t1 = tm - th;
             t2 = tm + th;
             cpyPoint1.add(r.get_direction().scalingV(t1));
             cpyPoint2.add(r.get_direction().scalingV(t2));
+            //add first point to the list
             l.add(cpyPoint1);
-            if (cpyPoint1.compareTo(cpyPoint2) == -1)
+            //If there are 2 intersection points
+            if (cpyPoint1.compareTo(cpyPoint2) == 0)
                 l.add(cpyPoint2);
             return l;
 
