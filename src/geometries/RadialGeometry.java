@@ -7,7 +7,7 @@ public class RadialGeometry {
         this._radius = _radius;
     }
     public RadialGeometry(RadialGeometry r) {
-        this._radius = r._radius;
+        this(r.get_radius());
     }
     public RadialGeometry() {
         this._radius = 0;
