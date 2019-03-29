@@ -18,9 +18,7 @@ public class Point3D extends Point2D {
 
     //copy constructor
     public Point3D(Point3D p) {
-        set_x(p.get_x());
-        set_y(p.get_y());
-        p._z = _z;
+      this(new Coordinate(p.get_x()),new Coordinate(p.get_y()),new Coordinate(p.get_z()));
     }
 
     //getters and setters
@@ -39,30 +37,27 @@ public class Point3D extends Point2D {
         return 0;
     }
 
-    public void add(Vector v) {
+    public Point3D add(Vector v) {
         get_x().add(v.get_head().get_x());
         get_y().add(v.get_head().get_y());
         get_z().add(v.get_head().get_z());
+        
+        return this;
     }
 
-    public void subtract(Vector v) {
+    public Point3D subtract(Vector v) {
         get_x().subtract(v.get_head().get_x());
         get_y().subtract(v.get_head().get_y());
         get_z().subtract(v.get_head().get_z());
+        
+        return this;
     }
 
-    public void subtract(Point3D p) {
+    public Point3D subtract(Point3D p) {
         get_x().subtract(p.get_x());
         get_y().subtract(p.get_y());
         get_z().subtract(p.get_z());
-    }
-
-    public Point3D pointSubtract(Point3D p) {
-
-        get_x().subtract(p.get_x());
-        get_y().subtract(p.get_y());
-        get_z().subtract(p.get_z());
-        Point3D newP = new Point3D(get_x(),get_y(),get_y());
-        return newP;
+                
+        return this;
     }
 }
