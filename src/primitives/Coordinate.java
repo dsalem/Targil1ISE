@@ -17,7 +17,7 @@ public class Coordinate {
 
     //copy constructor
     public Coordinate(Coordinate c) {
-        _coordinate = c._coordinate;
+        this(c.get_coordinate());
     }
 
     public double get_coordinate() {
@@ -35,10 +35,12 @@ public class Coordinate {
             return 1;
         return -1;
    }
-public void add (Coordinate c){
+public Coordinate add (Coordinate c){
         _coordinate += c._coordinate;
+        return this;
 }
-public void subtract (Coordinate c){
+public Coordinate subtract (Coordinate c){
     _coordinate -= c._coordinate;
+    return this;
 }
 }
