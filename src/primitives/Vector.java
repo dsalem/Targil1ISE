@@ -13,7 +13,7 @@ public class Vector {
 
     //copy constructor
     public Vector(Vector v) {
-        _head = v._head;
+        this(new Point3D(v.get_head()));
     }
 
     //empty constructor
@@ -39,14 +39,16 @@ public class Vector {
 
     }
 
-    public void add(Vector v) {
+    public Vector add(Vector v) {
         _head.add(v);
+        return this;
     }
 
 
 
-    public void subtract(Vector v) {
+    public Vector subtract(Vector v) {
         _head.subtract(v);
+        return this;
     }
 
     //
@@ -81,7 +83,7 @@ public class Vector {
 
     }
     public void scaling(double num) {
-        double length = length();
+        
         _head.get_x().set_coordinate(_head.get_x().get_coordinate()*num);
         _head.get_y().set_coordinate(_head.get_y().get_coordinate()*num);
         _head.get_z().set_coordinate(_head.get_z().get_coordinate()*num);
@@ -91,9 +93,7 @@ public class Vector {
         _head.get_x().set_coordinate(_head.get_x().get_coordinate()*num);
         _head.get_y().set_coordinate(_head.get_y().get_coordinate()*num);
         _head.get_z().set_coordinate(_head.get_z().get_coordinate()*num);
-        Point3D p = new Point3D(_head.get_x(),_head.get_y(),_head.get_z());
-        Vector v = new Vector(p);
-        return v;
+        return this;
 
     }
 
@@ -101,7 +101,7 @@ public class Vector {
     // calculate the dot product of a vector as follows: u ⋅ v = u1v1 + u2v2 + u3v3
     public double dotProduct(Vector v) {
 
-        return _head.get_x().get_coordinate()*v.get_head().get_x().get_coordinate() +
+        return  _head.get_x().get_coordinate()*v.get_head().get_x().get_coordinate() +
                 _head.get_y().get_coordinate()*v.get_head().get_y().get_coordinate()+
                 _head.get_z().get_coordinate()*v.get_head().get_z().get_coordinate();
     }

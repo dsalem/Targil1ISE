@@ -1,6 +1,8 @@
 package geometries;
 
+import java.util.List;
 import primitives.Point3D;
+import primitives.Ray;
 import primitives.Vector;
 //represents a cylinder in space
 public class Cylinder extends RadialGeometry implements Geometry{
@@ -50,6 +52,10 @@ public class Cylinder extends RadialGeometry implements Geometry{
 
     @Override
     public Vector getNormal(Point3D p) {
+        return null;
+    }
+    @Override
+    public List<Point3D> findIntersections(Ray r){
         return null;
     }
 }

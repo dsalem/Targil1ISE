@@ -12,8 +12,7 @@ public class Ray {
 
     //copy constructor
     public Ray(Ray r) {
-        _p00 = r._p00;
-        _direction = r._direction;
+        this(new Point3D(r.get_p00()),new Vector(r.get_direction()));
     }
 
     //empty constructor

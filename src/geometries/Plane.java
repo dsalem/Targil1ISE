@@ -20,8 +20,7 @@ public class Plane implements Geometry{
 
     //copy constructor
     public Plane(Plane p) {
-        this._p = p._p;
-        this._normal = p._normal;
+       this(new Point3D(p.get_p()),new Vector(p.get_normal()));
     }
 
     //empty constructor
@@ -54,21 +53,19 @@ public class Plane implements Geometry{
 
     @Override
     public List<Point3D> findIntersections(Ray r) {
-        List l = new ArrayList();                                    //initialize list
-        Point3D temp =  new Point3D(r.get_p00());                   //copy points and vectors
+        List l = new ArrayList();                                       //initialize list
+        Point3D temp =  new Point3D(r.get_p00());                       //copy points and vectors
         Point3D temp2 =  new Point3D(r.get_p00());
         Vector cpyNormal= new Vector(_normal);
         Vector cpyDirection = new Vector(r.get_direction());
-        double NDotV = (r.get_direction().dotProduct(get_normal()));// (N dotProduct V)
-        temp.subtract(get_p());                                     //(P0-Qo)
-        Vector tempV = new Vector(temp);                            //
-        tempV.scaling(1/NDotV);                                 //(P0-Qo)/(N dotProduct V)
-        cpyNormal.scaling(-1);                                    //-N
+        double NDotV = (r.get_direction().dotProduct(get_normal()));    // (N dotProduct V)
+        Vector tempV = new Vector(temp.subtract(get_p()));              //(P0-Qo)           
+        tempV.scaling(1/NDotV);                                         //(P0-Qo)/(N dotProduct V)
+        cpyNormal.scaling(-1);                                          //-N
         double t = cpyNormal.dotProduct(tempV);                         //obtain scalar t
-        cpyDirection.scaling(t);                                         //obtain vector of intersection
-        temp2.add(cpyDirection);
-        Point3D P = new Point3D(temp2);
-        l.add(P);                                                        //add to list
+        cpyDirection.scaling(t);                                        //obtain vector of intersection
+        Point3D P = new Point3D(temp2.add(cpyDirection));
+        l.add(P);                                                       //add to list
         return l;
     }
 }
