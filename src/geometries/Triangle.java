@@ -82,9 +82,9 @@ public class Triangle implements Geometry {
         Vector v2 = new Vector(cpyP2.subtract(r.get_p00()));
         Vector v3 = new Vector(cpyP3.subtract(r.get_p00()));
 
-        Vector cross1 = new Vector(v2.crossProduct(v1));
-        Vector cross2 = new Vector(v3.crossProduct(v1));
-        Vector cross3 = new Vector(v2.crossProduct(v3));
+        Vector cross1 = new Vector(v1.crossProduct(v2));
+        Vector cross2 = new Vector(v2.crossProduct(v3));
+        Vector cross3 = new Vector(v3.crossProduct(v1));
         cross1.scaling(1 / cross1.length());
         cross2.scaling(1 / cross2.length());
         cross3.scaling(1 / cross3.length());

@@ -101,9 +101,12 @@ public class Vector {
     // calculate the dot product of a vector as follows: u ⋅ v = u1v1 + u2v2 + u3v3
     public double dotProduct(Vector v) {
 
-        return  _head.get_x().get_coordinate()*v.get_head().get_x().get_coordinate() +
+        double sum = _head.get_x().get_coordinate()*v.get_head().get_x().get_coordinate() +
                 _head.get_y().get_coordinate()*v.get_head().get_y().get_coordinate()+
                 _head.get_z().get_coordinate()*v.get_head().get_z().get_coordinate();
+        return sum;
+
+
     }
 
 }

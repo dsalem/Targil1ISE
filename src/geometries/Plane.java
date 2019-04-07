@@ -59,7 +59,9 @@ public class Plane implements Geometry{
         Vector cpyNormal= new Vector(_normal);
         Vector cpyDirection = new Vector(r.get_direction());
         double NDotV = (r.get_direction().dotProduct(get_normal()));    // (N dotProduct V)
-        Vector tempV = new Vector(temp.subtract(get_p()));              //(P0-Qo)           
+        Vector tempV = new Vector(temp.subtract(get_p()));              //(P0-Qo)
+        if (NDotV == 0)
+            return l;
         tempV.scaling(1/NDotV);                                         //(P0-Qo)/(N dotProduct V)
         cpyNormal.scaling(-1);                                          //-N
         double t = cpyNormal.dotProduct(tempV);                         //obtain scalar t
