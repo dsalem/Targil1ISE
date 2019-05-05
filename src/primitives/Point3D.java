@@ -1,5 +1,7 @@
 package primitives;
 
+import static java.lang.Math.sqrt;
+
 //point3d represents a point in space
 public class Point3D extends Point2D {
     private Coordinate _z;
@@ -59,5 +61,12 @@ public class Point3D extends Point2D {
         get_z().subtract(p.get_z());
                 
         return this;
+    }
+
+    public double distance(Point3D point) {
+    double x= (get_x().get_coordinate()-point.get_x().get_coordinate());
+        double y= (get_y().get_coordinate()-point.get_y().get_coordinate());
+        double z= (get_z().get_coordinate()-point.get_z().get_coordinate());
+    return sqrt((x*x)+(y*y)+(z*z));
     }
 }
