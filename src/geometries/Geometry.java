@@ -1,13 +1,16 @@
 package geometries;
 
+import primitives.Material;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
 import java.util.List;
 
-public interface Geometry {
+public abstract class Geometry {
 
-   public Vector getNormal(Point3D p);
-   public List<Point3D> findIntersections(Ray r);
+private Material _material;
+
+   public abstract Vector getNormal(Point3D p);
+   public abstract List<Point3D> findIntersections(Ray r);
 }
