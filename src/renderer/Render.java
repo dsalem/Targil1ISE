@@ -96,21 +96,23 @@ public class Render {
         //for every pixel in view plane
         for (int i = 0; i < _imageWriter.getNx(); i++)
             for (int j = 0; j < _imageWriter.getNy(); j++) {
-            //form a ray for every pixel
-            Ray ray = _scene.getCamera().constructRayThroughPixel
-                        (_imageWriter.getNx(), _imageWriter.getNy(),
+                //form a ray for every pixel
+                Ray ray = _scene.getCamera().constructRayThroughPixel
+                        (_imageWriter.getNx(), _imageWriter.getNy(),j,i,
                                 _scene.getDistance(), _imageWriter.getWidth(),
-                                _imageWriter.getHeight(), j, i);
-            //if list of points is empty
-            List<Point3D> intersectionPoints = getSceneRayIntersections(ray);
-                if (intersectionPoints.isEmpty())
+                                _imageWriter.getHeight());
+                //if list of points is empty
+                List<Point3D> intersectionPoints = getSceneRayIntersections(ray);
+                if (intersectionPoints.isEmpty()) {
                     //set color to background color
-                    _imageWriter.writePixel(j, i, _scene.getBackground().getColor());
+                    _imageWriter.writePixel(i, j, _scene.getBackground().getColor());
+                }
                 //if there is a geometry
-                else
+                else{
                     closestPoint = getClosestPoint(intersectionPoints);
                 //color with geometry color
-                _imageWriter.writePixel(j, i, calcColor(closestPoint));
+                _imageWriter.writePixel(i, j, calcColor(closestPoint).getColor());
+            }
             }
 
 
