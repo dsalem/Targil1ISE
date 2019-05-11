@@ -7,29 +7,27 @@ import primitives.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Math.round;
 import static java.lang.Math.sqrt;
 
-//represents a sphere in
+//represents a sphere in space
 public class Sphere extends RadialGeometry implements Geometry {
+    //Point representing center of sphere
     private Point3D _center;
 
-//constructor
-
+   //full constructor
     public Sphere(double _radius, Point3D _center) {
         super(_radius);
         this._center = _center;
     }
-
+    //full constructor
     public Sphere(RadialGeometry r, Point3D _center) {
         super(r);
         this._center = _center;
     }
 
-
     //copy constructor
     public Sphere(Sphere s) {
-       this(s.get_radius(),new Point3D(s.get_center()));
+        this(s.get_radius(),new Point3D(s.get_center()));
     }
 
     //empty constructor
@@ -47,18 +45,23 @@ public class Sphere extends RadialGeometry implements Geometry {
         this._center = _center;
     }
 
+    //override getNormal function
     @Override
     public Vector getNormal(Point3D p) {
-
-
+        //form vector from point3d
         Vector cheatV = new Vector(_center);
+        //subtract the two vectors
         Vector myVector=new Vector(p.subtract(cheatV));
+        //normalize vector
         myVector.normalize();
+        //return vector
         return myVector;
     }
 
+    //override findIntersections function
     @Override
     public List<Point3D> findIntersections(Ray r) {
+        //create new list
         List l = new ArrayList();
         double th,tm,t1,t2,d;
         //copy points so the originals don't get changed
@@ -67,13 +70,16 @@ public class Sphere extends RadialGeometry implements Geometry {
         Point3D cpyCenter=new Point3D(get_center());
         Ray cpyRay1 = new Ray(r);
         Ray cpyRay2 = new Ray(r);
-        
+
         //create vector of ray to center
         Vector L = new Vector(cpyCenter.subtract(r.get_p00()));
+        //calculate dot product
         tm = L.dotProduct(r.get_direction());
+        //calculate square root of length-dot product
         d = sqrt((L.length() * L.length()) - (tm * tm));
-        d= (double)Math.round(d * 100000d) / 100000d; //round the number to 5 numbers after the decimal point
-       //if no intersections
+        //round the number to 5 numbers after the decimal point
+        d= (double)Math.round(d * 100000d) / 100000d;
+        //if no intersections
         if (d > get_radius())
             return l;
         else {
@@ -81,6 +87,7 @@ public class Sphere extends RadialGeometry implements Geometry {
             th = sqrt(get_radius() * get_radius() - (d * d));
             t1 = tm - th;
             t2 = tm + th;
+            //obtain the points of intersection
             cpyPoint1.add(cpyRay1.get_direction().scalingV(t1));
             cpyPoint2.add(cpyRay2.get_direction().scalingV(t2));
             //add first point to the list
