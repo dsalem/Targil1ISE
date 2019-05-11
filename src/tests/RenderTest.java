@@ -17,41 +17,42 @@ public class RenderTest {
     @Test
     public void basicRendering(){
 
-        Camera camera = new Camera(new Point3D(new Coordinate(0), new Coordinate(0), new Coordinate(0)),
-                new Vector(new Point3D(new Coordinate(0), new Coordinate(-1), new Coordinate(0))),
-                new Vector(new Point3D(new Coordinate(0), new Coordinate(0), new Coordinate(1)));
-
-
-     //   scene.setCamera(new Camera(new Point3D(0, 0, 0), new Vector(0, -1, 0), new Vector(0, 0, 1)));
-      //  scene.setDistance(100);
-        Color background = new Color(0, 0, 0);
-        AmbientLight ambientLight = new AmbientLight();
+        //initialise camera and scene
+        Camera camera=new Camera();
+        Color background = new Color(100, 100, 100);
+        AmbientLight ambientLight = new AmbientLight(new Color(255,255,255),1);
         List<Geometry> geometries= new ArrayList<Geometry>();
-       // scene.setGeometries(geometries);
+        // Set the scene
         Scene scene = new Scene("Test scene",background,ambientLight,geometries,camera,100);
-        geometries.add(new Sphere(new Color(100, 100,100 ), 50, new Point3D(0, 0, 150)));
+        //Add the geometries
+        //Add sphere in centre
+        geometries.add(new Sphere( 50, new Point3D(new Coordinate(0), new Coordinate(0), new Coordinate(150))));
 
-        geometries.add(new Triangle(new Color(100, 100,100 ), new Point3D( 100, 0, 149),
-                new Point3D(  0, 100, 149),
-                new Point3D( 100, 100, 149)));
+        //top right triangle
+        geometries.add(new Triangle(new Point3D( new Coordinate(100), new Coordinate(0), new Coordinate(149)),
+                new Point3D( new Coordinate(0), new Coordinate(100), new Coordinate(149)),
+                new Point3D( new Coordinate(100),new Coordinate(100), new Coordinate(149))));
 
-        geometries.add(new Triangle(new Color(100, 100,100 ), new Point3D( 100, 0, 149),
-                new Point3D(  0, -100, 149),
-                new Point3D( 100,-100, 149)));
+        //top left triangle
+        geometries.add(new Triangle(new Point3D( new Coordinate(100), new Coordinate(0), new Coordinate(149)),
+                new Point3D( new Coordinate(0), new Coordinate(-100), new Coordinate(149)),
+                new Point3D( new Coordinate(100),new Coordinate(-100), new Coordinate(149))));
 
-        geometries.add(new Triangle(new Color(100, 100,100 ), new Point3D(-100, 0, 149),
-                new Point3D(  0, 100, 149),
-                new Point3D(-100, 100, 149)));
+        //bottom right triangle
+        geometries.add(new Triangle(new Point3D( new Coordinate(-100), new Coordinate(0), new Coordinate(149)),
+                new Point3D( new Coordinate(0), new Coordinate(100), new Coordinate(149)),
+                new Point3D( new Coordinate(-100),new Coordinate(100), new Coordinate(149))));
 
-        geometries.add(new Triangle(new Color(100, 100,100 ), new Point3D(-100, 0, 149),
-                new Point3D(  0,  -100, 149),
-                new Point3D(-100, -100, 149)));
+        //bottom left triangle
+        geometries.add(new Triangle(new Point3D( new Coordinate(-100), new Coordinate(0), new Coordinate(149)),
+                new Point3D( new Coordinate(0), new Coordinate(-100), new Coordinate(149)),
+                new Point3D( new Coordinate(-100),new Coordinate(-100), new Coordinate(149))));
 
+        //Render the image
         ImageWriter imageWriter = new ImageWriter("test0", 500, 500, 500, 500);
         Render render = new Render(scene, imageWriter);
 
         render.renderImage();
-    //    render.printGrid(50);
         render.getImageWriter().writeToimage();
     }
 }
