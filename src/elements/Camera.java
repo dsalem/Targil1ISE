@@ -9,10 +9,14 @@ import primitives.Vector;
 //class camera
 public class Camera {
     //data fields for camera
-    Point3D _P0;
-    Vector _vUp;
-    Vector _vTo;
-    Vector _vRight;
+    //Point representing camera in space
+    private Point3D _P0;
+    //vector 90 deg. up from camera
+    private Vector _vUp;
+    //vector 90 deg. straight from camera
+    private Vector _vTo;
+    //vector 90 deg. right from camera
+    private Vector _vRight;
 
     //full constructor
     public Camera(Point3D p, Vector vup, Vector vto, Vector vright) {
@@ -72,7 +76,7 @@ public class Camera {
     public Ray constructRayThroughPixel(int Nx, int Ny, double x, double y,
                                         double screenDistance, double screenWidth, double screenHeight) {
 
-//copy vTo, vRight and vUp so they don't change when scaled
+        //copy vTo, vRight and vUp so they don't change when scaled
         Vector cpyVto = new Vector(getVto());
         Vector cpyVup = new Vector(getVup());
         Vector cpyVright = new Vector(getVright());
@@ -83,9 +87,9 @@ public class Camera {
         double Rx = screenWidth / Nx;
         double Ry = screenHeight / Ny;
         //obtain vector to go right/left from point
-        double scaleRight = ((x - (Nx / 2)) * Rx) + (Rx / 2);
+        double scaleRight = ((x - ((Nx-1)/ 2)) * Rx);
         //obtain vector to go up/down from point
-        double scaleUp = ((y - (Ny / 2)) * Ry) + (Ry / 2);
+        double scaleUp = ((y - ((Ny-1) / 2)) * Ry);
         //obtain point i,j from origin of screen
         Pc.add((cpyVright.scalingV(scaleRight)).subtract(cpyVup.scalingV(scaleUp)));
         //obtain vector i,j from the camera
@@ -97,4 +101,5 @@ public class Camera {
         return r;
     }
 }
+
 
