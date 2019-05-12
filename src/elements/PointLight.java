@@ -11,6 +11,7 @@ public class PointLight extends Light {
     private double _Kc, _Kl, _Kq;
 
 
+    //full constructor
     public PointLight(Color color, Point3D _position, double _Kc, double _Kl, double _Kq) {
         super(color);
         this._position = _position;
@@ -19,6 +20,12 @@ public class PointLight extends Light {
         this._Kq = _Kq;
     }
 
+    //copy constructor
+    public PointLight(PointLight p){
+        this(p.get_color(),new Point3D(p.get_position()),p.get_Kc(),p.get_Kl(),p.get_Kq());
+    }
+
+    //empty constructor
     public PointLight() {
         super();
         this._position = new Point3D(new Coordinate(0), new Coordinate(0), new Coordinate(0));
@@ -27,6 +34,7 @@ public class PointLight extends Light {
         this._Kq = 0;
     }
 
+    //getters and setters
     public Point3D get_position() {
         return _position;
     }

@@ -2,10 +2,10 @@ package primitives;
 
 //coordinate class that represents a coordinate on a graph
 public class Coordinate {
+    //Coordinate on a plane represented by a double
     private double _coordinate;
 
-
-    //constructor
+    //full constructor
     public Coordinate(double _coordinate) {
         this._coordinate = _coordinate;
     }
@@ -19,7 +19,7 @@ public class Coordinate {
     public Coordinate(Coordinate c) {
         this(c.get_coordinate());
     }
-
+    //getters and setters
     public double get_coordinate() {
         return _coordinate;
     }
@@ -28,19 +28,20 @@ public class Coordinate {
         this._coordinate = _coordinate;
     }
 
-
-
-   public int compareTo (Coordinate c){
+    //comparison with other coordinate
+    public int compareTo (Coordinate c){
         if (_coordinate == c._coordinate)
             return 1;
         return -1;
-   }
-public Coordinate add (Coordinate c){
+    }
+    //add coordinates
+    public Coordinate add (Coordinate c){
         _coordinate += c._coordinate;
         return this;
-}
-public Coordinate subtract (Coordinate c){
-    _coordinate -= c._coordinate;
-    return this;
-}
+    }
+    //subtract coordinates
+    public Coordinate subtract (Coordinate c){
+        _coordinate -= c._coordinate;
+        return this;
+    }
 }

@@ -1,10 +1,12 @@
 package primitives;
-
+//ray class
 public class Ray {
+    //Point of beginning of ray
     private Point3D _p00;
+    //Vector of direction of ray
     private Vector _direction;
 
-    //constructor
+    //full constructor
     public Ray(Point3D _p00, Vector _direction) {
         this._p00 = _p00;
         this._direction = _direction;
@@ -20,7 +22,6 @@ public class Ray {
         _p00 = new Point3D();
         _direction = new Vector();
     }
-
 
     //getters and setters
     public Point3D get_p00() {

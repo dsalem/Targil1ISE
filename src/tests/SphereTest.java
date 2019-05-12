@@ -11,7 +11,7 @@ import primitives.Vector;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-
+//tests for sphere operations
 public class SphereTest {
     Coordinate x0 = new Coordinate(0);
     Coordinate x1 = new Coordinate(-1);
@@ -38,25 +38,22 @@ public class SphereTest {
     Sphere s1 = new Sphere(r1, pc1);
     Sphere s2 = new Sphere(r1, pc2);
     Sphere s3 = new Sphere(r1, pc3);
-
-
-
-
+    //test for sphere intersections
     @Test
     public void findIntersections() {
-
+        //two intersections through middle of sphere
         ArrayList<Point3D> l = new ArrayList<Point3D>(s1.findIntersections(ray1));
         System.out.print(l);
         assertEquals("find intersection failed for sphere with radius 1 and 2 intersections", l.size(), 2, 1e-10);
         assertEquals("find intersection failed for sphere with radius 1 and 2 intersections", l.get(0).get_z().get_coordinate(), -2, 1e-10);
         assertEquals("find intersection failed for sphere with radius 1 and 2 intersections", l.get(1).get_z().get_coordinate(), -4, 1e-10);
-
+        //one intersection on boundary point
         ArrayList<Point3D> l2 = new ArrayList<Point3D>(s2.findIntersections(ray1));
         System.out.print(l2);
         assertEquals("find intersection failed for sphere with 1 intersection", l2.size(), 1, 1e-10);
         assertEquals("find intersection failed for sphere with 1 intersection", l2.get(0).get_y().get_coordinate(), 0, 1e-10);
-
+        //no intersections - sphere not in front of camera
         ArrayList<Point3D> l3 = new ArrayList<Point3D>(s3.findIntersections(ray1));
-        assertEquals("find intersection failed for sphere with radius 1 and 2 intersections", l3.size(), 0, 1e-10);
+        assertEquals("find intersection failed for sphere with radius 1 and 0 intersections", l3.size(), 0, 1e-10);
     }
 }

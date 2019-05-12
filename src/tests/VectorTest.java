@@ -6,9 +6,9 @@ import primitives.Point3D;
 import primitives.Vector;
 
 import static org.junit.Assert.*;
-
+//vector operation tests
 public class VectorTest {
-
+//instantiate objects for tests
     Coordinate x = new Coordinate(1);
     Coordinate y = new Coordinate(2);
     Coordinate z = new Coordinate(3);
@@ -22,7 +22,7 @@ public class VectorTest {
     Vector v2 = new Vector(p2);
     Vector v3 = new Vector(p3);
 
-
+//test for addition
     @Test
     public void add() {
 
@@ -31,7 +31,7 @@ public class VectorTest {
         assertEquals("addition failed for y",v1.get_head().get_y().get_coordinate(),4,1e-10);
         assertEquals("addition failed for z",v1.get_head().get_z().get_coordinate(),6,1e-10);
     }
-
+//test for subtraction
     @Test
     public void subtract() {
 
@@ -40,26 +40,26 @@ public class VectorTest {
         assertEquals("subtraction failed for y",v1.get_head().get_y().get_coordinate(),0,1e-10);
         assertEquals("subtraction failed for z",v1.get_head().get_z().get_coordinate(),0,1e-10);
     }
-
+//test for cross product
     @Test
     public void crossProduct() {
-       Vector v4 =  v1.crossProduct(v1);
+        Vector v4 =  v1.crossProduct(v1);
         assertEquals("crossProduct failed for x",v4.get_head().get_x().get_coordinate(),0,1e-10);
         assertEquals("crossProduct failed for y",v4.get_head().get_y().get_coordinate(),0,1e-10);
         assertEquals("crossProduct failed for z",v4.get_head().get_z().get_coordinate(),0,1e-10);
     }
-
+//test for length
     @Test
     public void length() {
         assertEquals("length failed for v1",v3.length(),1,1e-10);
     }
-
+//test for normalization
     @Test
     public void normalize() {
         v1.normalize();
         assertEquals("length failed for v1",v1.length(),1,1e-10);
     }
-
+//test for scaling
     @Test
     public void scaling() {
         v1.scaling(2);
@@ -67,9 +67,8 @@ public class VectorTest {
         assertEquals("scaling failed for y",v1.get_head().get_y().get_coordinate(),4,1e-10);
         assertEquals("scaling failed for z",v1.get_head().get_z().get_coordinate(),6,1e-10);
 
-
     }
-
+//test for dot product
     @Test
     public void dotProduct() {
         v1.dotProduct(v2);

@@ -1,10 +1,12 @@
 package primitives;
-
+//Point2D class
 public class Point2D {
+    //Coordinate x of 2d point
     private Coordinate _x;
+    //Coordinate y of 2d point
     private Coordinate _y;
 
-    //constructor
+    //full constructor
     public Point2D(Coordinate _x, Coordinate _y) {
         this._x = _x;
         this._y = _y;
@@ -39,10 +41,11 @@ public class Point2D {
         this._y = _y;
     }
 
-
+    //comparison with other point2d
     public int compareTo (Point2D p){
-      if(  _x.compareTo(p.get_x()) == 1 &&  _y.compareTo(p.get_y())==1)
-          return 1;
-      return 0;
+        if(  _x.compareTo(p.get_x()) == 1 &&  _y.compareTo(p.get_y())==1)
+            return 1;
+        return 0;
     }
 }
+
