@@ -13,7 +13,7 @@ public class Color {
      * The internal fields tx`o maintain RGB components as double numbers from 0 to
      * whatever...
      */
-    double _r = 0.0, _g = 0.0, _b = 0.0;
+    double _r=0.0, _g=0.0, _b=0.0;
 
     final static Color BLACK = new Color();
 
@@ -87,6 +87,9 @@ public class Color {
         if (r < 0 || g < 0 || b < 0)
             throw new IllegalArgumentException(
                     "Negative color component is illegal");
+        if(r>255) r=255;
+        if(g>255) g=255;
+        if(b>255) b=255;
         _r = r;
         _g = g;
         _b = b;
@@ -144,6 +147,12 @@ public class Color {
             b += c._b;
         }
         return new Color(r, g, b);
+    }
+
+    public void add(Color c) {
+            _r += c._r;
+            _g += c._g;
+            _b += c._b;
     }
 
     /**
