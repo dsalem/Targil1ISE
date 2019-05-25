@@ -5,39 +5,34 @@ import primitives.Color;
 
 //class Ambient lighting
 public class AmbientLight extends Light{
-    //color of the lighting
-    private Color _color;
     //measure of intensity
     private double Ka;
 
     //full constructor
     public AmbientLight(Color c,double d){
-        _color=c;
+        setColor(c);
         Ka =d;
     }
 
     //copy constructor
     public AmbientLight(AmbientLight a){
-        this(a._color,a.Ka);
+        this(a.get_color(),a.Ka);
     }
 
     //empty constructor
     public AmbientLight(){
-        _color.setColor(0,0,0);
+        get_color().setColor();
         Ka=0;
     }
 
     //getters/setters
-    public Color getColor(){
-        return _color;
-    }
 
     public double getKa(){
         return Ka;
     }
 
     public void setColor(Color c) {
-        _color=c;
+        get_color().setColor(c);
     }
 
     public void setKa(double d){
@@ -46,6 +41,6 @@ public class AmbientLight extends Light{
 
     //find intensity
     public Color getIntensity(){
-        return _color.scale(getKa());
+        return get_color().scale(getKa());
     }
 }
