@@ -10,7 +10,7 @@ import java.util.List;
 import static java.lang.Math.sqrt;
 
 //represents a sphere in space
-public class Sphere extends RadialGeometry implements Geometry {
+public class Sphere extends RadialGeometry{
     //Point representing center of sphere
     private Point3D _center;
 
@@ -48,10 +48,12 @@ public class Sphere extends RadialGeometry implements Geometry {
     //override getNormal function
     @Override
     public Vector getNormal(Point3D p) {
+        //copy point p
+        Point3D copy = new Point3D(p);
         //form vector from point3d
         Vector cheatV = new Vector(_center);
         //subtract the two vectors
-        Vector myVector=new Vector(p.subtract(cheatV));
+        Vector myVector=new Vector(copy.subtract(cheatV));
         //normalize vector
         myVector.normalize();
         //return vector
