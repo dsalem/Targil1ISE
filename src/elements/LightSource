@@ -1,0 +1,15 @@
+package elements;
+
+import primitives.Color;
+import primitives.Point3D;
+import primitives.Vector;
+
+//interface Light Source
+public interface LightSource {
+
+    //get intensity
+    public Color getIntensity(Point3D p);
+    //get L vector
+    public Vector getL(Point3D p);
+
+}
