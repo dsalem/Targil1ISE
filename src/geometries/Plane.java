@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //represents a plane in space
-public class Plane implements Geometry{
+public class Plane extends Geometry{
     //Point representing plane in space
     private Point3D _p;
     //Normal to the point of the plane
