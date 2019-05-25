@@ -1,27 +1,30 @@
 package geometries;
 
-import java.util.List;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 //represents a cylinder in space
-public class Cylinder extends RadialGeometry implements Geometry{
+public class Cylinder extends RadialGeometry{
+    //Point representing axis of cylinder
     private Point3D _axisPoint;
+    //vector representing direction of axis
     private Vector _axisDirection;
 
-//constructor
+    //full constructor
     public Cylinder(double _radius, Point3D _axisPoint, Vector _axisDirection) {
         super(_radius);
         this._axisPoint = _axisPoint;
         this._axisDirection = _axisDirection;
     }
-//constructor
+    //full constructor
     public Cylinder(RadialGeometry r, Point3D _axisPoint, Vector _axisDirection) {
         super(r);
         this._axisPoint = _axisPoint;
         this._axisDirection = _axisDirection;
     }
-//copy constructor
+    //copy constructor
     public Cylinder(Cylinder c){
         this._axisPoint = c._axisPoint;
         this._axisDirection = c._axisDirection;
@@ -33,7 +36,7 @@ public class Cylinder extends RadialGeometry implements Geometry{
         this._axisPoint = new Point3D();
         this._axisDirection = new Vector();
     }
-//getters and setters
+    //getters and setters
     public Point3D get_axisPoint() {
         return _axisPoint;
     }
@@ -50,11 +53,13 @@ public class Cylinder extends RadialGeometry implements Geometry{
         this._axisDirection = _axisDirection;
     }
 
-    @Override
+    //override getNormal function
+
     public Vector getNormal(Point3D p) {
         return null;
     }
-    @Override
+    //override findIntersections function
+
     public List<Point3D> findIntersections(Ray r){
         return null;
     }
