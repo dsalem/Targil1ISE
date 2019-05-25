@@ -1,0 +1,124 @@
+package scene;
+
+import elements.AmbientLight;
+import elements.Camera;
+import elements.LightSource;
+import geometries.Geometry;
+import primitives.Color;
+
+import java.util.Iterator;
+import java.util.List;
+
+//class scene
+public class Scene {
+
+    //scene name
+    private String _sceneName;
+    //background color
+    private Color _background;
+    //ambient light
+    private AmbientLight _ambientLight;
+    //list of geometries
+    private List<Geometry> _geometries;
+    //list of light sources
+    private List<LightSource> _lights;
+
+
+
+    //camera
+    private Camera _camera;
+    //screen distance
+    private double _screenDistance;
+
+    //full constructor
+    public Scene(String name, Color back, AmbientLight amb, List<Geometry> geometry,List<LightSource> lightsource, Camera c, double dist) {
+        _sceneName = name;
+        _background = back;
+        _ambientLight = amb;
+        _geometries = geometry;
+        _lights=lightsource;
+        _camera = c;
+        _screenDistance = dist;
+    }
+
+    //copy constructor
+    public Scene(Scene s) {
+        this(s._sceneName, s._background, new AmbientLight(s._ambientLight), s._geometries,s._lights, new Camera(s._camera), s._screenDistance);
+    }
+
+    //getters and setters
+    public String getName() {
+        return _sceneName;
+    }
+
+    public Color getBackground() {
+        return _background;
+    }
+
+    public AmbientLight getAmbientLight() {
+        return _ambientLight;
+    }
+
+    public List<Geometry> getList() {
+        return _geometries;
+    }
+
+    public List<LightSource> getLights(){
+        return _lights;
+    }
+
+    public Camera getCamera() {
+        return _camera;
+    }
+
+    public double getDistance() {
+        return _screenDistance;
+    }
+
+    public void set_sceneName(String _sceneName) {
+        this._sceneName = _sceneName;
+    }
+
+    public void set_background(Color _background) {
+        this._background = _background;
+    }
+
+    public void set_ambientLight(AmbientLight _ambientLight) {
+        this._ambientLight = _ambientLight;
+    }
+
+    public void set_geometries(List<Geometry> _geometries) {
+        this._geometries = _geometries;
+    }
+
+    public void set_lights(List<LightSource> _lights) {
+        this._lights = _lights;
+    }
+
+    public void set_camera(Camera _camera) {
+        this._camera = _camera;
+    }
+
+    public void set_screenDistance(double _screenDistance) {
+        this._screenDistance = _screenDistance;
+    }
+
+    //get iterator for geometries
+    public Iterator<Geometry> getGeometriesIterator() {
+        return _geometries.iterator();
+    }
+
+    //add a geometry
+    public void addGeometry(Geometry g) {
+        _geometries.add(g);
+    }
+
+    //add a light
+    public void addLight(LightSource l) { _lights.add(l); }
+
+    //get iterator for lights
+    public Iterator<LightSource> getLightsIterator(){
+        return _lights.iterator();
+    }
+
+}
