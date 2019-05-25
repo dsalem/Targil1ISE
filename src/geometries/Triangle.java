@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //represents a triangle in space
-public class Triangle implements Geometry {
+public class Triangle extends Geometry {
     //Point one of triangle
     private Point3D _p1;
     //Point two of triangle
