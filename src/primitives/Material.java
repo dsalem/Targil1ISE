@@ -7,17 +7,20 @@ public class Material {
     private double _Ks;
     //shininess
     private int _nShininess;
+    //color
+    private Color _emission=new Color();
 
     //full constructor
-    public Material(double _Kd, double _Ks, int _nShininess) {
+    public Material(double _Kd, double _Ks, int _nShininess, Color emission) {
         this._Kd = _Kd;
         this._Ks = _Ks;
         this._nShininess = _nShininess;
+        this._emission = emission;
     }
 
     //copy constructor
-    public Material(Material m){
-        this(m.get_Kd(),m.get_Ks(),m.get_nShininess());
+    public Material(Material m) {
+        this(m.get_Kd(), m.get_Ks(), m.get_nShininess(), m.get_emission());
     }
 
     //getters and setters
@@ -43,5 +46,13 @@ public class Material {
 
     public int get_nShininess() {
         return _nShininess;
+    }
+
+    public Color get_emission() {
+        return _emission;
+    }
+
+    public void set_emission(Color _emission) {
+        _emission.setColor(_emission);
     }
 }
