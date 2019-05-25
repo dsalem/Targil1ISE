@@ -1,7 +1,13 @@
 package geometries;
 
+import primitives.Point3D;
+import primitives.Ray;
+import primitives.Vector;
+
+import java.util.List;
+
 //class radial geometry
-public class RadialGeometry {
+public class RadialGeometry extends Geometry{
     //Radius of geometry
     private double _radius;
 
@@ -25,6 +31,16 @@ public class RadialGeometry {
 
     public void set_radius(double _radius) {
         this._radius = _radius;
+    }
+
+    @Override
+    public Vector getNormal(Point3D p) {
+        return null;
+    }
+
+    @Override
+    public List<Point3D> findIntersections(Ray r) {
+        return null;
     }
 }
 
