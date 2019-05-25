@@ -3,8 +3,9 @@ package elements;
 import primitives.Color;
 import primitives.Coordinate;
 import primitives.Point3D;
+import primitives.Vector;
 
-public class PointLight extends Light {
+public class PointLight extends Light implements LightSource{
     //position of light
     private Point3D _position;
     //constants of direction
@@ -33,6 +34,7 @@ public class PointLight extends Light {
         this._Kl = 0;
         this._Kq = 0;
     }
+
 
     //getters and setters
     public Point3D get_position() {
@@ -67,10 +69,33 @@ public class PointLight extends Light {
         this._Kq = _Kq;
     }
 
+   //override get intensity
     @Override
     public Color getIntensity() {
-        double d = 1;
-        double temp = get_Kc()+get_Kl()*d + get_Kq()*(d*d);
-        return get_color().scale(1/temp);
+        return null;
+    }
+
+    //override get intensity with point
+    @Override
+    public Color getIntensity(Point3D p) {
+        //copy color to keep variable the same
+        Color copy = new Color(get_color());
+        //find distance between light and geometry
+        double d = p.distance(_position);
+        //calculate intensity IL=I0/(Kc+Kl(d)+Kq(d^2)
+        double denominator = (get_Kc() + (get_Kl()*d) + (get_Kq()*(d*d)));
+        //scale color by denominator to return intensity
+        return copy.scale(1/denominator);
+    }
+
+    //override get L vector
+    @Override
+    public Vector getL(Point3D p) {
+        //copy point p
+        Point3D copy = new Point3D(p);
+        //return vector l from light source to object
+        Vector l = new Vector(copy.subtract(get_position()));
+        l.normalize();
+        return l;
     }
 }
