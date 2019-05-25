@@ -7,12 +7,14 @@ public abstract class Light {
     //color
     private Color _color;
 
+    //full constructor
     public Light(Color color) {
         this._color=color;
     }
 
+    //empty constructor
     public Light(){
-        _color.setColor();
+        _color=new Color();
     }
 
     //getters and setters
@@ -25,5 +27,5 @@ public abstract class Light {
     }
 
     //find intensity
-    public Color getIntensity(){return null;}
+    public abstract Color getIntensity();
 }
