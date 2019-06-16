@@ -1,6 +1,7 @@
 package renderer;
 
 import elements.LightSource;
+import geometries.FlatGeometry;
 import geometries.Geometry;
 import primitives.Color;
 import primitives.Point3D;
@@ -19,6 +20,9 @@ public class Render {
     private Scene _scene;
     //image writer member
     private ImageWriter _imageWriter;
+
+    //set recursion level
+    double RECURSION_LEVEL = 2;
 
     //full constructor
     public Render(Scene s, ImageWriter i) {
@@ -61,7 +65,8 @@ public class Render {
             //add each point to the original list
             List<Point3D> geometryIntersectionPoints = geometry.findIntersections(ray);
             //  add geometryIntersectionPoints to intersectionPoints
-            intersectionPoints.put(geometry, geometryIntersectionPoints);
+            if (!geometryIntersectionPoints.isEmpty())
+                intersectionPoints.put(geometry, geometryIntersectionPoints);
         }
         //return list of intersection points
         return intersectionPoints;
@@ -111,19 +116,22 @@ public class Render {
                 //if there is a geometry
                 else {
                     Map<Geometry, Point3D> closestPoint = getClosestPoint(intersectionPoints);
-                    for (Map.Entry<Geometry, List<Point3D>> entry :
-                            intersectionPoints.entrySet()) {
+                    for (Map.Entry<Geometry, Point3D> entry :
+                            closestPoint.entrySet()) {
                         //for every point in list
-                        for (Point3D point : entry.getValue())
-                            //color with geometry color
-                            _imageWriter.writePixel(j, i, calcColor(entry.getKey(), point));
+                        // for (Point3D point : entry.getValue())
+                        //color with geometry color
+                        _imageWriter.writePixel(j, i, calcColor(entry.getKey(), entry.getValue(), ray));
                     }
                 }
             }
     }
 
-    //calculate color
-    private Color calcColor(Geometry geometry, Point3D p) {
+    //calculate color with level
+    private Color calcColor(Geometry geometry, Point3D p, Ray inRay, int level) {
+        //base case for recursion
+        if (level == RECURSION_LEVEL)
+            return new Color(0, 0, 0);
         //copy point p
         Point3D copy = new Point3D(p);
         //initialise emmission and ambient light
@@ -132,59 +140,86 @@ public class Render {
         //create iterator for Lightsource list
         Iterator<LightSource> lights = _scene.getLightsIterator();
         //instantiate colors
-        Color diffuseLight = new Color(0,0,0);
-        Color specularLight = new Color(0,0,0);
+        Color diffuseLight = new Color(0, 0, 0);
+        Color specularLight = new Color(0, 0, 0);
         //form new vector for function
         Point3D temp = new Point3D(copy.subtract(getScene().getCamera().getP0()));
         Vector specular = new Vector(temp);
         specular.normalize();
         //For all the different light sources
-        while(lights.hasNext()){
+        while (lights.hasNext()) {
             LightSource currentLight = lights.next();
-            //add diffuse light
-            diffuseLight.add( calcDiffusiveComp(geometry.get_material().get_Kd(),
-                    geometry.getNormal(p),currentLight.getL(p),currentLight.getIntensity(p)));
-            //add specular light
-            specularLight.add(calcSpecularComp(geometry.get_material().get_Ks(),specular,
-                    geometry.getNormal(p),currentLight.getL(p),geometry.get_material().get_nShininess(),
-                    currentLight.getIntensity(p)));
+            //if not a shadow pixel
+            if (!occluded(currentLight, p, geometry)) {
+                if (Math.signum(currentLight.getL(p).dotProduct(geometry.getNormal(p))) == Math.signum(new Vector(p.subtract(getScene().getCamera().getP0())).dotProduct(geometry.getNormal(p)))) {
+                    //add diffuse light
+                    diffuseLight.add(calcDiffusiveComp(geometry.get_material().get_Kd(),
+                            geometry.getNormal(p), currentLight.getL(p), currentLight.getIntensity(p)));
+                    //add specular light
+                    specularLight.add(calcSpecularComp(geometry.get_material().get_Ks(), specular,
+                            geometry.getNormal(p), currentLight.getL(p), geometry.get_material().get_nShininess(),
+                            currentLight.getIntensity(p)));
+                }
+            }
         }
+        //Recursive call for reflected ray
+        Ray reflectedRay = new Ray(constructReflectedRay(geometry.getNormal(p), p, inRay));
+        Map<Geometry, Point3D> reflectedEntry = new Point3D(findClosestIntersection(reflectedRay));
+        Color reflectedColor = new Color();
+        for (Map.Entry<Geometry, Point3D> entry : reflectedEntry.entrySet())
+            reflectedColor = calcColor(entry.getKey(), entry.getValue(), reflectedRay, level + 1);
+        double Kr = geometry.get_material().get_Kr();
+        Color reflectedLight = new Color(reflectedColor.scale(Kr));
+
+        //Recursive call for refracted ray
+        Ray refractedRay = new Ray(constructRefractedRay(geometry.getNormal(p), p, inRay));
+        Map<Geometry, Point3D> refractedEntry = new Point3D(findClosestIntersection(refractedRay));
+        Color refractedColor = new Color();
+        for (Map.Entry<Geometry, Point3D> entry : refractedEntry.entrySet())
+            refractedColor = calcColor(entry.getKey(), entry.getValue(), refractedRay, level + 1);
+        double Kt = geometry.get_material().get_Kt();
+        Color refractedLight = new Color(refractedColor.scale(Kt));
+
         //add all the light sources
-        return (ambientLight.add(emissionLight,diffuseLight,specularLight));
+        return (ambientLight.add(emissionLight, diffuseLight, specularLight, reflectedLight, refractedLight));
 
     }
 
+    //calculate color with no level
+    private Color calcColor(Geometry geometry, Point3D p, Ray inRay) {
+        //TODO = BUUUUUG
+        return calcColor(geometry, p, inRay, 0);
+    }
 
     //HELPER FUNCTIONS
     //calculate diffusive light
-    private Color calcDiffusiveComp(double Kd, Vector normal, Vector l, Color intensity){
+    private Color calcDiffusiveComp(double Kd, Vector normal, Vector l, Color intensity) {
         //obtain dot product of normal with L
         double dotp = normal.dotProduct(l);
-        if (dotp>1)
-            dotp=1;
-        if(dotp<0)
-            dotp=0;
+        if (dotp < 0)
+            dotp *= -1;
         //multiply dot product by Kd
-        dotp*=Kd;
+        dotp *= Kd;
         //scale intensity by new dot product
         return intensity.scale(dotp);
     }
 
     //calculate specular light
-    private Color calcSpecularComp(double Ks,Vector direction,Vector normal,Vector l,double shininess,Color intensity){
+    private Color calcSpecularComp(double Ks, Vector direction, Vector normal, Vector l, int shininess, Color
+            intensity) {
         //dot product of direction and reflected ray : V.R
-        direction.normalize();
-        double dotp = Math.max(0,direction.dotProduct(calcR(l,normal)));
+        direction.scaling(-1);
+        double dotp = direction.dotProduct(calcR(l, normal));
         //exponent by n
-        double exponent = Math.pow(dotp,shininess);
+        double exponent = Math.pow(dotp, shininess);
         //scale by Ks
-        exponent*=Ks;
+        exponent *= Ks;
         //scale intensity with exponent
         return intensity.scale(exponent);
     }
 
     //calculate R
-    private Vector calcR(Vector l, Vector normal){
+    private Vector calcR(Vector l, Vector normal) {
         Vector copyl = new Vector(l);
         Vector copyl2 = new Vector(l);
         Vector copyNormal = new Vector(normal);
@@ -198,4 +233,63 @@ public class Render {
         copyl2.normalize();
         return copyl2;
     }
+
+    //check if shadow pixel
+    private boolean occluded(LightSource light, Point3D point, Geometry geometry) {
+        //Obtain vector from point to light source
+        Vector lightDirection = light.getL(point);
+        lightDirection.scaling(-1);
+        //Obtain vector of normal to point * 2
+        Point3D geometryPoint = new Point3D(point);
+        Vector epsVector = new Vector(geometry.getNormal(point));
+        epsVector.scaling(2);
+        //Form new point above geometry
+        geometryPoint.add(epsVector);
+        //Form new ray from point to light source
+        Ray lightRay = new Ray(geometryPoint, lightDirection);
+        //Obtain points of intersection
+        Map<Geometry, List<Point3D>> intersectionPoints = getSceneRayIntersections(lightRay);
+        //if intersection is a flat geometry - remove from list
+        if (geometry instanceof FlatGeometry)
+            intersectionPoints.remove(geometry);
+        //return true if point exists/if shadow pixel
+        if (intersectionPoints.isEmpty())
+            return false;
+        /*else {
+            for (Map.Entry<Geometry, List<Point3D>> entry : intersectionPoints.entrySet()) {
+                if (entry.getKey().get_material().get_Kt() == 0)
+                    return true;
+                return false;
+            }
+        }
+        */
+        //TODO
+        return intersectionPoints.containsKey(geometry.get_material().get_Kt() == 0);
+    }
+
+    //construct reflected ray
+    private Ray constructReflectedRay(Vector normal, Point3D p, Ray inRay){
+        //copy values
+        Vector cpyNormal = new Vector(normal);
+        Ray cpyRay = new Ray(inRay);
+        //obtain dot product of ray from camera and normal
+        double dotProduct = normal.dotProduct(inRay.get_direction());
+        //scale by 2
+        dotProduct*=2;
+        //scale normal by result
+        cpyNormal.scaling(dotProduct);
+        //subtract normal from ray direction
+        cpyRay.get_direction().subtract(cpyNormal);
+        return cpyRay;
+    }
+
+    
+    //construct refracted ray
+    private Ray constructRefractedRay(Vector normal, Point3D p, Ray inRay) {
+    Vector cpyNormal = new Vector(normal);
+    cpyNormal.subtract(inRay.get_direction());
+    
+    }
+    
+     
 }
