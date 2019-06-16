@@ -87,9 +87,11 @@ public class Camera {
         double Rx = screenWidth / Nx;
         double Ry = screenHeight / Ny;
         //obtain vector to go right/left from point
-        double scaleRight = ((x - ((Nx-1)/ 2)) * Rx);
+        double scaleRight = ((x -(Nx/2))*Rx)+(Rx/2);
         //obtain vector to go up/down from point
-        double scaleUp = ((y - ((Ny-1) / 2)) * Ry);
+        double scaleUp = ((y -(Ny/2))*Ry)+(Ry/2);
+        //double scaleRight = ((x -(Nx/2))*Rx)-(Rx/2);
+        //double scaleUp = ((y -(Ny/2))*Ry)-(Ry/2);
         //obtain point i,j from origin of screen
         Pc.add((cpyVright.scalingV(scaleRight)).subtract(cpyVup.scalingV(scaleUp)));
         //obtain vector i,j from the camera
