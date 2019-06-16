@@ -64,7 +64,7 @@ public class Sphere extends RadialGeometry{
     @Override
     public List<Point3D> findIntersections(Ray r) {
         //create new list
-        List l = new ArrayList();
+        List<Point3D> l = new ArrayList<Point3D>();
         double th,tm,t1,t2,d;
         //copy points so the originals don't get changed
         Point3D cpyPoint1 = new Point3D(r.get_p00());
@@ -80,22 +80,23 @@ public class Sphere extends RadialGeometry{
         //calculate square root of length-dot product
         d = sqrt((L.length() * L.length()) - (tm * tm));
         //round the number to 5 numbers after the decimal point
-        d= (double)Math.round(d * 100000d) / 100000d;
+        //d= (double)Math.round(d * 100000d) / 100000d;
         //if no intersections
         if (d > get_radius())
-            return l;
+            return new ArrayList<>();
         else {
             //Calculate the intersection points
-            th = sqrt(get_radius() * get_radius() - (d * d));
+            th = sqrt((get_radius() * get_radius()) - (d * d));
             t1 = tm - th;
             t2 = tm + th;
             //obtain the points of intersection
             cpyPoint1.add(cpyRay1.get_direction().scalingV(t1));
             cpyPoint2.add(cpyRay2.get_direction().scalingV(t2));
             //add first point to the list
+            if(t1>0)
             l.add(cpyPoint1);
             //If there are 2 intersection points
-            if (cpyPoint1.compareTo(cpyPoint2) == 0)
+            if (cpyPoint1.compareTo(cpyPoint2) == 0 && t2>0)
                 l.add(cpyPoint2);
             return l;
 
