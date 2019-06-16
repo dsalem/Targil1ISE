@@ -1,6 +1,6 @@
 package primitives;
-
 public class Material {
+
     //first attenuation factor
     private double _Kd;
     //second attenuation factor
@@ -8,7 +8,21 @@ public class Material {
     //shininess
     private int _nShininess;
     //color
-    private Color _emission=new Color();
+    private Color _emission = new Color();
+    //constant Kr
+    private double _Kr;
+    //constant Kt
+    private double _Kt;
+
+    //full constructor
+    public Material(double _Kd, double _Ks, int _nShininess, Color _emission, double _Kr, double _Kt) {
+        this._Kd = _Kd;
+        this._Ks = _Ks;
+        this._nShininess = _nShininess;
+        this._emission = _emission;
+        this._Kr = _Kr;
+        this._Kt = _Kt;
+    }
 
     //full constructor
     public Material(double _Kd, double _Ks, int _nShininess, Color emission) {
@@ -54,5 +68,22 @@ public class Material {
 
     public void set_emission(Color _emission) {
         _emission.setColor(_emission);
+    }
+
+
+    public double get_Kr() {
+        return _Kr;
+    }
+
+    public void set_Kr(double _Kr) {
+        this._Kr = _Kr;
+    }
+
+    public double get_Kt() {
+        return _Kt;
+    }
+
+    public void set_Kt(double _Kt) {
+        this._Kt = _Kt;
     }
 }
