@@ -9,6 +9,7 @@ public class Ray {
     //full constructor
     public Ray(Point3D _p00, Vector _direction) {
         this._p00 = _p00;
+        _direction.normalize();
         this._direction = _direction;
     }
 
@@ -20,6 +21,7 @@ public class Ray {
     //empty constructor
     public Ray() {
         _p00 = new Point3D();
+        _direction.normalize();
         _direction = new Vector();
     }
 
@@ -33,6 +35,7 @@ public class Ray {
     }
 
     public Vector get_direction() {
+        _direction.normalize();
         return _direction;
     }
 
