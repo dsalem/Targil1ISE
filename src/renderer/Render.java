@@ -121,16 +121,16 @@ public class Render {
                         //for every point in list
                         // for (Point3D point : entry.getValue())
                         //color with geometry color
-                        _imageWriter.writePixel(j, i, calcColor(entry.getKey(), entry.getValue(), ray));
+                        _imageWriter.writePixel(j, i, calcColor(entry.getKey(), entry.getValue(),ray,0));
                     }
                 }
             }
     }
 
     //calculate color with level
-    private Color calcColor(Geometry geometry, Point3D p, Ray inRay, int level) {
+    private Color calcColor(Geometry geometry, Point3D p, Ray inRay,int level) {
         //base case for recursion
-        if (level == RECURSION_LEVEL)
+          if (level == RECURSION_LEVEL)
             return new Color(0, 0, 0);
         //copy point p
         Point3D copy = new Point3D(p);
@@ -162,9 +162,12 @@ public class Render {
                 }
             }
         }
+
+
         //Recursive call for reflected ray
         Ray reflectedRay = new Ray(constructReflectedRay(geometry.getNormal(p), p, inRay));
-        Map<Geometry, Point3D> reflectedEntry = new Point3D(findClosestIntersection(reflectedRay));
+        Map<Geometry, List<Point3D>> reflectedList = (getSceneRayIntersections(reflectedRay));
+        Map<Geometry,Point3D> reflectedEntry=getClosestPoint(reflectedList);
         Color reflectedColor = new Color();
         for (Map.Entry<Geometry, Point3D> entry : reflectedEntry.entrySet())
             reflectedColor = calcColor(entry.getKey(), entry.getValue(), reflectedRay, level + 1);
@@ -173,7 +176,8 @@ public class Render {
 
         //Recursive call for refracted ray
         Ray refractedRay = new Ray(constructRefractedRay(geometry.getNormal(p), p, inRay));
-        Map<Geometry, Point3D> refractedEntry = new Point3D(findClosestIntersection(refractedRay));
+        Map<Geometry, List<Point3D>> refractedList = getSceneRayIntersections(refractedRay);
+        Map<Geometry,Point3D> refractedEntry = getClosestPoint(refractedList);
         Color refractedColor = new Color();
         for (Map.Entry<Geometry, Point3D> entry : refractedEntry.entrySet())
             refractedColor = calcColor(entry.getKey(), entry.getValue(), refractedRay, level + 1);
@@ -190,6 +194,8 @@ public class Render {
         //TODO = BUUUUUG
         return calcColor(geometry, p, inRay, 0);
     }
+
+
 
     //HELPER FUNCTIONS
     //calculate diffusive light
@@ -253,16 +259,17 @@ public class Render {
         if (geometry instanceof FlatGeometry)
             intersectionPoints.remove(geometry);
         //return true if point exists/if shadow pixel
-        if (intersectionPoints.isEmpty())
+        if(intersectionPoints.isEmpty())
             return false;
-        /*else {
+
+        else {
             for (Map.Entry<Geometry, List<Point3D>> entry : intersectionPoints.entrySet()) {
                 if (entry.getKey().get_material().get_Kt() == 0)
                     return true;
                 return false;
             }
         }
-        */
+
         //TODO
         return intersectionPoints.containsKey(geometry.get_material().get_Kt() == 0);
     }
@@ -283,13 +290,11 @@ public class Render {
         return cpyRay;
     }
 
-    
+
     //construct refracted ray
     private Ray constructRefractedRay(Vector normal, Point3D p, Ray inRay) {
-    Vector cpyNormal = new Vector(normal);
-    cpyNormal.subtract(inRay.get_direction());
-    
+    Ray ray = new Ray(p,inRay.get_direction());
+    return ray;
     }
-    
-     
+
 }
